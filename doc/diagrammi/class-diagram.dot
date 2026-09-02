@@ -1,0 +1,80 @@
+digraph ClassDiagram {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [shape=record, fontname="Helvetica", fontsize=10, style=filled, fillcolor="#f4f6fb"];
+    edge [fontname="Helvetica", fontsize=9];
+
+    subgraph cluster_common {
+        label="cinemax-common";
+        style=dashed; color="#888888"; fontsize=12; fontname="Helvetica-Bold";
+
+        Comando [label="{«enumeration»\nComando|LOGIN\lCERCA_PROIEZIONI\lCREA_PRENOTAZIONE\l...\l}"];
+        Richiesta [label="{Richiesta|- comando: Comando\l- parametri: Object[]\l|+ getParametro(i, tipo)\l}"];
+        Risposta [label="{Risposta|- esito: EsitoRisposta\l- messaggio: String\l- dato: Object\l|+ ok(msg, dato)\l+ erroreApplicativo(msg)\l}"];
+        DTO [label="{«dto»\nFilmDTO / ProiezioneDTO /\nUtenteDTO / PrenotazioneDTO|attributi immutabili\l(nessuna logica di dominio)\l}"];
+    }
+
+    subgraph cluster_server {
+        label="cinemax-server";
+        style=dashed; color="#888888"; fontsize=12; fontname="Helvetica-Bold";
+
+        ServerCM [label="{ServerCM|+ main(args)\l|chiede host/credenziali DB,\lapre ServerSocket, accept() in loop\l}"];
+        GestoreClient [label="{GestoreClient\l«Runnable»|- socket: Socket\l- connessioneFactory\l|+ run()\l}"];
+        Dispatcher [label="{Dispatcher|- servizi...\l|+ gestisci(Richiesta): Risposta\l}"];
+        ServizioAutenticazione [label="{ServizioAutenticazione|+ login(...)\l+ registraCliente(...)\l}"];
+        ServizioProiezioni [label="{ServizioProiezioni|+ cercaProiezioni(...)\l+ aggiungiProiezione(...)\l+ modificaProiezione(...)\l}"];
+        ServizioPrenotazioni [label="{ServizioPrenotazioni|+ creaPrenotazione(...)\l+ modificaPrenotazione(...)\l+ eliminaPrenotazione(...)\l}"];
+        FilmDAO [label="{FilmDAO|+ trovaPerId(id)\l+ inserisci(...)\l}"];
+        ProiezioneDAO [label="{ProiezioneDAO|+ cerca(...)\l+ inserisci(...)\l+ modifica(...)\l+ elimina(...)\l}"];
+        UtenteDAO [label="{UtenteDAO|+ trovaPerUsername(...)\l+ registraCliente(...)\l}"];
+        PrenotazioneDAO [label="{PrenotazioneDAO|+ crea(...)\l+ attivePerCliente(...)\l+ cerca(...)\l}"];
+        ConnessioneFactory [label="{ConnessioneFactory|+ apriConnessione(): Connection\l}"];
+        GestoreEccezioniSql [label="{«utility»\nGestoreEccezioniSql|+ classifica(SQLException): RuntimeException\l}"];
+    }
+
+    subgraph cluster_client {
+        label="cinemax-client";
+        style=dashed; color="#888888"; fontsize=12; fontname="Helvetica-Bold";
+
+        ClientCM [label="{ClientCM|+ main(args)\l}"];
+        ConnessioneServer [label="{ConnessioneServer|- socket: Socket\l|+ invia(Comando, Object...): Risposta\l}"];
+        FinestraPrincipale [label="{FinestraPrincipale\l«JFrame»|- connessione\l- utenteCorrente: UtenteDTO\l|+ mostraPannello(JPanel)\l+ eseguiRichiesta(...)\l}"];
+        Pannelli [label="{«JPanel» (x17)\nPannelloMenuIniziale,\nPannelloLogin,\nPannelloRicercaProiezioni,\nPannelloAreaCliente, ...|usano solo\lFinestraPrincipale.eseguiRichiesta(...)\l}"];
+    }
+
+    Database [shape=cylinder, style=filled, fillcolor="#e8ded0", label="PostgreSQL\n(dbCM)"];
+
+    ServerCM -> GestoreClient [label="crea 1 per client"];
+    GestoreClient -> Dispatcher [label="usa"];
+    GestoreClient -> ConnessioneFactory [label="usa"];
+    Dispatcher -> ServizioAutenticazione;
+    Dispatcher -> ServizioProiezioni;
+    Dispatcher -> ServizioPrenotazioni;
+    Dispatcher -> Richiesta [style=dotted, label="riceve"];
+    Dispatcher -> Risposta [style=dotted, label="produce"];
+    ServizioAutenticazione -> UtenteDAO;
+    ServizioProiezioni -> ProiezioneDAO;
+    ServizioProiezioni -> FilmDAO;
+    ServizioPrenotazioni -> PrenotazioneDAO;
+    ServizioPrenotazioni -> ProiezioneDAO;
+    FilmDAO -> GestoreEccezioniSql [style=dotted];
+    ProiezioneDAO -> GestoreEccezioniSql [style=dotted];
+    UtenteDAO -> GestoreEccezioniSql [style=dotted];
+    PrenotazioneDAO -> GestoreEccezioniSql [style=dotted];
+    FilmDAO -> Database [label="JDBC"];
+    ProiezioneDAO -> Database [label="JDBC"];
+    UtenteDAO -> Database [label="JDBC"];
+    PrenotazioneDAO -> Database [label="JDBC"];
+
+    ClientCM -> ConnessioneServer [label="apre"];
+    ClientCM -> FinestraPrincipale [label="crea"];
+    FinestraPrincipale -> ConnessioneServer [label="usa"];
+    FinestraPrincipale -> Pannelli [label="mostra"];
+    Pannelli -> DTO [style=dotted, label="visualizzano"];
+
+    ConnessioneServer -> Richiesta [style=dotted, label="invia"] ;
+    ConnessioneServer -> Risposta [style=dotted, label="riceve"];
+    GestoreClient -> ConnessioneServer [style=invis];
+
+    {rank=same; ConnessioneServer; GestoreClient}
+}

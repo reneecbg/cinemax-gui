@@ -1,0 +1,12 @@
+cinemax.client
+cinemax.client.gui
+cinemax.client.rete
+cinemax.common.dto
+cinemax.common.protocol
+cinemax.server
+cinemax.server.dao
+cinemax.server.db
+cinemax.server.eccezioni
+cinemax.server.rete
+cinemax.server.servizi
+cinemax.server.util

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================================
+   CineMax - POM padre (aggregatore multi-modulo)
+   Laboratorio Interdisciplinare B
+   Autori:
+     - <Renee Angelica Cabigting> - Matricola <756997> - Sede <CO>
+   File: pom.xml
+  ============================================================================
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>it.cinemax</groupId>
+    <artifactId>cinemax-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>CineMax - Progetto padre</name>
+
+    <!--
+        Struttura multi-modulo: un modulo "common" condiviso (protocollo di
+        comunicazione e DTO), un modulo "server" e un modulo "client",
+        ciascuno compilato in un proprio .jar eseguibile indipendente, come
+        richiesto dalla traccia ("due eseguibili .jar separati").
+
+        I tre moduli si trovano sotto src/, per rispettare la struttura di
+        consegna richiesta dalla traccia (cartella "src" nella radice del
+        repository), mantenendo pero' la build multi-modulo Maven: il
+        percorso di ciascun <module> e' relativo a QUESTO file, quindi
+        "src/cinemax-common" punta correttamente alla sottocartella.
+    -->
+    <modules>
+        <module>src/cinemax-common</module>
+        <module>src/cinemax-server</module>
+        <module>src/cinemax-client</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <postgresql.version>42.7.4</postgresql.version>
+    </properties>
+
+    <!--
+        dependencyManagement centralizza la versione delle dipendenze comuni
+        (qui solo il driver JDBC di PostgreSQL, usato dal modulo server):
+        i moduli figli la dichiarano senza ripetere il numero di versione.
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.10.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

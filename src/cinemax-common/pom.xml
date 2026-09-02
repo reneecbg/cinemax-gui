@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================================
+   CineMax - POM del modulo cinemax-common
+   File: pom.xml
+  ============================================================================
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>it.cinemax</groupId>
+        <artifactId>cinemax-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>cinemax-common</artifactId>
+    <packaging>jar</packaging>
+
+    <name>CineMax - Common (protocollo e DTO condivisi)</name>
+    <description>
+        Contiene esclusivamente le classi condivise da cinemax-server e
+        cinemax-client: il protocollo applicativo scambiato sul socket
+        (Richiesta/Risposta/Comando) e i DTO che rappresentano i dati sul
+        filo. Non contiene alcuna dipendenza da JDBC ne' da Swing: deve
+        poter essere usato da entrambi i lati senza portarsi dietro
+        dipendenze superflue.
+    </description>
+</project>

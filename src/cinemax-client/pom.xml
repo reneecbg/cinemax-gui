@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================================
+   CineMax - POM del modulo cinemax-client
+   File: pom.xml
+  ============================================================================
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>it.cinemax</groupId>
+        <artifactId>cinemax-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>cinemax-client</artifactId>
+    <packaging>jar</packaging>
+
+    <name>CineMax - Client (clientCM)</name>
+
+    <!--
+        Nota: nessuna dipendenza da JDBC/PostgreSQL qui. Il client parla
+        SOLO con cinemax-common (protocollo e DTO) e con Swing (incluso nel
+        JDK): non ha e non deve avere alcun accesso diretto al database,
+        ne' diretto ne' transitivo. Questo e' un punto che vale la pena
+        controllare all'orale se chiedono "com'e' garantita l'architettura
+        distribuita client/server" - la risposta e' anche "il client non
+        potrebbe collegarsi al DB anche se volesse, non ha il driver".
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>it.cinemax</groupId>
+            <artifactId>cinemax-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>CineMaxClient</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>cinemax.client.ClientCM</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

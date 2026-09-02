@@ -1,0 +1,48 @@
+erDiagram
+    FILM ||--o{ PROIEZIONE : "e' proiettato in"
+    SALA ||--o{ PROIEZIONE : "ospita"
+    UTENTE ||--o{ PRENOTAZIONE : "effettua (solo se ruolo=CLIENTE)"
+    PROIEZIONE ||--o{ PRENOTAZIONE : "riceve"
+
+    FILM {
+        int id_film PK
+        string titolo
+        string genere
+        string regista
+        int anno
+        int durata_minuti
+        int eta_minima
+    }
+
+    SALA {
+        int id_sala PK
+        string nome
+        int capienza
+    }
+
+    PROIEZIONE {
+        int id_proiezione PK
+        int id_film FK
+        int id_sala FK
+        timestamp data_ora
+        numeric costo_biglietto
+    }
+
+    UTENTE {
+        string username PK
+        string nome
+        string cognome
+        string password_hash
+        date data_nascita
+        string domicilio
+        string ruolo
+        timestamp data_registrazione
+    }
+
+    PRENOTAZIONE {
+        string codice PK
+        string username_cliente FK
+        int id_proiezione FK
+        int numero_biglietti
+        timestamp data_creazione
+    }

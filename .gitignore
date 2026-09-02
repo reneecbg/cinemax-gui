@@ -1,0 +1,14 @@
+# Cartelle di build Maven (rigenerabili con "mvn package" o build.sh/build.bat)
+# NON escludiamo bin/ perche' la traccia richiede i .jar nel repository.
+src/*/target/
+*/target/
+target/
+
+# File di sistema
+.DS_Store
+Thumbs.db
+
+# File di progetto IDE (facoltativo, decommenta se vuoi escluderli)
+# .idea/
+# *.iml
+# .vscode/

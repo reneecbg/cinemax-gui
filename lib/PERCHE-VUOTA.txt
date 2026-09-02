@@ -1,0 +1,16 @@
+Questa cartella è prevista dalla struttura di consegna richiesta dalla
+traccia ("directory lib contenente eventuali librerie esterne per
+compilazione e esecuzione"), ma è intenzionalmente vuota.
+
+Motivo: sia CineMaxServer.jar che CineMaxClient.jar sono generati con
+maven-shade-plugin come "fat jar" — cioè includono già al loro interno
+tutte le dipendenze necessarie (in particolare il driver JDBC di
+PostgreSQL, usato solo dal server). Questo significa che per compilare
+il progetto basta Maven (che scarica le dipendenze automaticamente nel
+proprio repository locale ~/.m2, non in questa cartella), e per eseguirlo
+basta il comando "java -jar", senza dover gestire un classpath separato
+o copiare manualmente librerie qui.
+
+Se in futuro si aggiungesse una libreria che non può essere gestita da
+Maven (raro), andrebbe inserita qui e referenziata nel pom.xml del
+modulo interessato con uno scope "system".

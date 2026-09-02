@@ -1,0 +1,17 @@
+digraph ERDiagram {
+    rankdir=LR;
+    fontname="Helvetica";
+    node [shape=record, fontname="Helvetica", fontsize=10, style=filled, fillcolor="#f4f6fb"];
+    edge [fontname="Helvetica", fontsize=10, color="#444444"];
+
+    FILM [label="{FILM|id_film (PK)\ltitolo\lgenere\lregista\lanno\ldurata_minuti\leta_minima\l}"];
+    SALA [label="{SALA|id_sala (PK)\lnome\lcapienza\l}"];
+    PROIEZIONE [label="{PROIEZIONE|id_proiezione (PK)\lid_film (FK)\lid_sala (FK)\ldata_ora\lcosto_biglietto\l}"];
+    UTENTE [label="{UTENTE|username (PK)\lnome\lcognome\lpassword_hash\ldata_nascita\ldomicilio\lruolo\l}"];
+    PRENOTAZIONE [label="{PRENOTAZIONE|codice (PK)\lusername_cliente (FK)\lid_proiezione (FK)\lnumero_biglietti\ldata_creazione\l}"];
+
+    FILM -> PROIEZIONE [label="1     e' proiettato in     N", dir=none];
+    SALA -> PROIEZIONE [label="1     ospita     N", dir=none];
+    UTENTE -> PRENOTAZIONE [label="1     effettua (se CLIENTE)     N", dir=none];
+    PROIEZIONE -> PRENOTAZIONE [label="1     riceve     N", dir=none];
+}
