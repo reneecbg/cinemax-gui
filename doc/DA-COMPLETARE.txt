@@ -9,6 +9,6 @@ Stato di questa cartella:
   definitivo dell'applicazione.
 - diagrammi/ — FATTO (class-diagram, ER-diagram, sequence-diagram, con
   sorgenti).
-- javadoc/ — DA FARE: generare con il comando indicato nel README.txt
+- javadoc/ — FATTO: generare con il comando indicato nel README.txt
   della radice del progetto e copiare qui il contenuto di
   target/site/apidocs.
