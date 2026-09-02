@@ -1,7 +1,7 @@
 Stato di questa cartella:
 
 - manuali/manuale-tecnico.docx (e .pdf) — FATTO.
-- manuali/manuale-utente.docx (e .pdf) — FATTO, con screenshot reali di
+- manuali/manuale-utente.docx (e .pdf) — FATTO, con screenshot di
   tutte le schermate (menu iniziale, guest, ricerca avanzata, dettaglio,
   registrazione, login, area cliente, prenotazione, le mie prenotazioni,
   area proiezionista, inserisci/pianificate/storiche, area bigliettaio,
